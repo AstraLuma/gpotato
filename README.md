@@ -17,7 +17,7 @@ Apache 2.0
 
 ## Homepage
 
-[https://bitbucket.org/a_ba/gbulb](https://bitbucket.org/a_ba/gbulb)
+[https://github.com/astronouth7303/gpotato](https://github.com/astronouth7303/gpotato)
 
 ## Requirements
 - python3.4 or python3.3+[asyncio][asyncio]
