@@ -78,20 +78,20 @@ The issue: given a context, GLib provides no ways to know if there is an
 existing event loop running for that context. It implies the following
 divergences with PEP 3156:
 
- - .run_forever() and .run_until_complete() are not guaranteed to run
+ - `.run_forever()` and `.run_until_complete()` are not guaranteed to run
    immediatly. If the context is owned by another thread, then they will
    block until the context is released by the other thread.
 
- - .stop() is relevant only when the currently running Glib.MainLoop object
-   was created by this asyncio object (i.e. by calling .run_forever() or
-   .run_until_complete()). The event loop will quit only when it regains
+ - `.stop()` is relevant only when the currently running `Glib.MainLoop` object
+   was created by this asyncio object (i.e. by calling `.run_forever()` or
+   `.run_until_complete()`). The event loop will quit only when it regains
    control of the context. This can happen in two cases:
-    1. when multiple event loop are enclosed (by creating new MainLoop
-       objects and calling .run() recursively)
+    1. when multiple event loop are enclosed (by creating new `MainLoop`
+       objects and calling `.run()` recursively)
     2. when the event loop has not even yet started because it is still
        trying to acquire the context
 
-It should be wiser not to use any recursion at all. GLibEventLoop will
+It should be wiser not to use any recursion at all. `GLibEventLoop` will
 actually prevent you from doing that (in accordance with PEP 3156). However
 you should keep in mind that enclosed loops may be started at any time by
 third-party code calling directly GLib's primitives.
