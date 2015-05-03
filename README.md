@@ -1,4 +1,4 @@
-# gbulb - a PEP 3156 event loop based on GLib
+# gpotato - a PEP 3156 event loop based on GLib
 
 
 Gbulb is a python library that implements a [PEP 3156][PEP3156] interface for
