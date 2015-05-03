@@ -29,21 +29,27 @@ Apache 2.0
 
 ### GLib event loop
 
-        import asyncio, gbulb
-        asyncio.set_event_loop_policy(gbulb.GLibEventLoopPolicy())
+```python
+import asyncio, gbulb
+asyncio.set_event_loop_policy(gbulb.GLibEventLoopPolicy())
+```
 
 ### Gtk+ event loop *(suitable for GTK+ applications)*
 
-        import asyncio, gbulb
-        asyncio.set_event_loop_policy(gbulb.GtkEventLoopPolicy())
+```python
+import asyncio, gbulb
+asyncio.set_event_loop_policy(gbulb.GtkEventLoopPolicy())
+```
 
 ### GApplication/GtkApplication event loop
 
-        import asyncio, gbulb
-        asyncio.set_event_loop_policy(gbulb.GApplicationEventLoopPolicy())
+```python
+import asyncio, gbulb
+asyncio.set_event_loop_policy(gbulb.GApplicationEventLoopPolicy())
 
-        loop = asyncio.get_event_loop()
-        loop.run_forever(application = my_gapplication_object)
+loop = asyncio.get_event_loop()
+loop.run_forever(application = my_gapplication_object)
+```
 
 ## Known issues
 
@@ -51,20 +57,20 @@ Apache 2.0
 
 ## Divergences with PEP 3156
 
-In GLib, the concept of event loop is split in two classes: GLib.MainContext
-and GLib.MainLoop.
+In GLib, the concept of event loop is split in two classes: `GLib.MainContext`
+and `GLib.MainLoop`.
 
-The thing is mostly implemented by MainContext. MainLoop is just a wrapper
-that implements the run() and quit() functions. MainLoop.run() atomically
-acquires a MainContext and repeatedly calls MainContext.iteration() until
-MainLoop.quit() is called.
+The thing is mostly implemented by `MainContext`. `MainLoop` is just a wrapper
+that implements the `run()` and `quit()` functions. `MainLoop.run()` atomically
+acquires a `MainContext` and repeatedly calls `MainContext.iteration()` until
+`MainLoop.quit()` is called.
 
-A MainContext is not bound to a particular thread, however is cannot be used
+A `MainContext` is not bound to a particular thread, however is cannot be used
 by multiple threads concurrently. If the context is owned by another thread,
-then MainLoop.run() will block until the context is released by the other
+then `MainLoop.run()` will block until the context is released by the other
 thread.
 
-MainLoop.run() may be called recursively by the same thread (this is mainly
+`MainLoop.run()` may be called recursively by the same thread (this is mainly
 used for implementing modal dialogs in Gtk).
 
 
