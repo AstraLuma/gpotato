@@ -2,14 +2,14 @@
 
 from distutils.core import setup
 
-setup(name='gbulb',
+setup(name='gpotato',
       version='0.1',
       description='GLib event loop for tulip (PEP 3156)',
-      author='Anthony Baire',
-      author_email='ayba@free.fr',
+      author='Jamie Bliss',
+      author_email='astronouth7303@gmail.com',
       license='Apache 2.0',
-      url='https://bitbucket.org/a_ba/gbulb',
-      packages=['gbulb'],
+      url='https://github.com/astronouth7303/gpotato',
+      packages=['gpotato'],
       data_files=['README.md', 'examples/test-gtk.py'],
       long_description="""Gbulb is a python library that implements a PEP 3156 interface for the GLib main event loop. It is designed to be used together with the tulip reference implementation.
 
