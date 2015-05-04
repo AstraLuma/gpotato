@@ -23,14 +23,14 @@ from asyncio.selector_events import _SelectorSslTransport
 from asyncio.selector_events import _SelectorSocketTransport
 from asyncio.selector_events import _SelectorDatagramTransport
 
-import gbulb
+import gpotato
 from gi.repository import GLib
 from gi.repository import GObject
 
-gbulb.BaseGLibEventLoop.init_class()
+gpotato.BaseGLibEventLoop.init_class()
 GObject.threads_init()
 
-class GLibTestLoop(gbulb.GLibEventLoop):
+class GLibTestLoop(gpotato.GLibEventLoop):
 
     def __init__(self,*k):
         self.reset_counters()

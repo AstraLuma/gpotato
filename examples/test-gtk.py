@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from gi.repository import Gtk, GObject
 import asyncio
-import gbulb
+import gpotato
 
 class ProgressBarWindow(Gtk.Window):
 
@@ -41,7 +41,7 @@ class ProgressBarWindow(Gtk.Window):
     def on_magic(self, button):
         def coro():
             try:
-                yield from gbulb.wait_signal(self._magic_button, "clicked")
+                yield from gpotato.wait_signal(self._magic_button, "clicked")
                 self.progressbar.set_text ("blah blah!")
                 self.progressbar.set_fraction(0.50)
 
@@ -50,7 +50,7 @@ class ProgressBarWindow(Gtk.Window):
                 self.progressbar.set_fraction(0.75)
                 self.progressbar.set_text ("pouet pouet!")
 
-                r = yield from gbulb.wait_signal(self._magic_button, "clicked")
+                r = yield from gpotato.wait_signal(self._magic_button, "clicked")
 
                 self.progressbar.set_fraction(1.0)
                 self.progressbar.set_text ("done!")
@@ -73,7 +73,7 @@ class ProgressBarWindow(Gtk.Window):
             self._running.cancel()
 
             
-asyncio.set_event_loop_policy(gbulb.GtkEventLoopPolicy())
+asyncio.set_event_loop_policy(gpotato.GtkEventLoopPolicy())
 
 win = ProgressBarWindow()
 win.connect("delete-event", Gtk.main_quit)

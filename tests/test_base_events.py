@@ -13,17 +13,17 @@ from asyncio import base_events
 from asyncio import constants
 from asyncio import test_utils
 
-import gbulb
+import gpotato
 from gi.repository import GLib
 from gi.repository import GObject
 
-gbulb.BaseGLibEventLoop.init_class()
+gpotato.BaseGLibEventLoop.init_class()
 GObject.threads_init()
 
 class BaseEventLoopTests(unittest.TestCase):
 
     def setUp(self):
-        self.loop = gbulb.GLibEventLoop(GLib.main_context_default())
+        self.loop = gpotato.GLibEventLoop(GLib.main_context_default())
         self.loop._selector = unittest.mock.Mock()
         asyncio.set_event_loop(None)
 
@@ -105,7 +105,7 @@ class BaseEventLoopTests(unittest.TestCase):
             pass
 
         h = self.loop.call_later(10.0, cb)
-        self.assertIsInstance(h, gbulb.GLibHandle)
+        self.assertIsInstance(h, gpotato.GLibHandle)
 #        self.assertIn(h, self.loop._scheduled)
         self.assertNotIn(h, self.loop._ready)
 

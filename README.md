@@ -1,7 +1,7 @@
 # gpotato - a PEP 3156 event loop based on GLib
 
 
-Gbulb is a python library that implements a [PEP 3156][PEP3156] interface for
+Gpotato is a python library that implements a [PEP 3156][PEP3156] interface for
 the [GLib main event loop][glibloop]. It is designed to be used together with
 the [tulip reference implementation][tulip].
 
@@ -30,22 +30,22 @@ Apache 2.0
 ### GLib event loop
 
 ```python
-import asyncio, gbulb
-asyncio.set_event_loop_policy(gbulb.GLibEventLoopPolicy())
+import asyncio, gpotato
+asyncio.set_event_loop_policy(gpotato.GLibEventLoopPolicy())
 ```
 
 ### Gtk+ event loop *(suitable for GTK+ applications)*
 
 ```python
-import asyncio, gbulb
-asyncio.set_event_loop_policy(gbulb.GtkEventLoopPolicy())
+import asyncio, gpotato
+asyncio.set_event_loop_policy(gpotato.GtkEventLoopPolicy())
 ```
 
 ### GApplication/GtkApplication event loop
 
 ```python
-import asyncio, gbulb
-asyncio.set_event_loop_policy(gbulb.GApplicationEventLoopPolicy())
+import asyncio, gpotato
+asyncio.set_event_loop_policy(gpotato.GApplicationEventLoopPolicy())
 
 loop = asyncio.get_event_loop()
 loop.run_forever(application = my_gapplication_object)

@@ -29,7 +29,7 @@ from asyncio import events
 from asyncio import selector_events
 from asyncio import test_utils
 
-import gbulb
+import gpotato
 from gi.repository import GLib
 from gi.repository import GObject
 
@@ -1590,7 +1590,7 @@ else:
     class UnixEventLoopTestsMixin(EventLoopTestsMixin):
         def setUp(self):
             super().setUp()
-            watcher = gbulb.GLibChildWatcher()
+            watcher = gpotato.GLibChildWatcher()
             watcher.attach_loop(self.loop)
             asyncio.set_child_watcher(watcher)
 
@@ -1627,7 +1627,7 @@ else:
 #        def create_event_loop(self):
 #            return unix_events.SelectorEventLoop(selectors.SelectSelector())
 
-    gbulb.BaseGLibEventLoop.init_class()
+    gpotato.BaseGLibEventLoop.init_class()
     GObject.threads_init()
 
     class GLibEventLoopTests(UnixEventLoopTestsMixin,
@@ -1635,15 +1635,15 @@ else:
                              unittest.TestCase):
 
         def create_event_loop(self):
-            return gbulb.GLibEventLoop(GLib.main_context_default())
+            return gpotato.GLibEventLoop(GLib.main_context_default())
 
-    if gbulb.Gtk:  
+    if gpotato.Gtk:  
         class GtkEventLoopTests(UnixEventLoopTestsMixin,
                                 SubprocessTestsMixin,
                                 unittest.TestCase):
 
             def create_event_loop(self):
-                return gbulb.GLibEventLoop(gtk=True)
+                return gpotato.GLibEventLoop(gtk=True)
 
 
 class HandleTests(unittest.TestCase):

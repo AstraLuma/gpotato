@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from distutils.core import setup
+from setuptools import setup
 
 setup(name='gpotato',
       version='0.1',
@@ -11,7 +11,7 @@ setup(name='gpotato',
       url='https://github.com/astronouth7303/gpotato',
       packages=['gpotato'],
       data_files=['README.md', 'examples/test-gtk.py'],
-      long_description="""Gbulb is a python library that implements a PEP 3156 interface for the GLib main event loop. It is designed to be used together with the tulip reference implementation.
+      long_description="""gpotato is a python library that implements a PEP 3156 interface for the GLib main event loop. It is designed to be used together with the tulip reference implementation.
 
 This is a work in progress. The code is experimental and may break at any time.
 """,

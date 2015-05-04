@@ -22,18 +22,18 @@ from asyncio import log
 from asyncio import test_utils
 from asyncio import unix_events
 
-import gbulb
+import gpotato
 from gi.repository import GLib
 from gi.repository import GObject
 
-gbulb.BaseGLibEventLoop.init_class()
+gpotato.BaseGLibEventLoop.init_class()
 GObject.threads_init()
 
 @unittest.skipUnless(signal, 'Signals are not supported')
 class SelectorEventLoopTests(unittest.TestCase):
 
     def setUp(self):
-        self.loop = gbulb.GLibEventLoop(GLib.main_context_default())
+        self.loop = gpotato.GLibEventLoop(GLib.main_context_default())
         asyncio.set_event_loop(None)
 
     def tearDown(self):
