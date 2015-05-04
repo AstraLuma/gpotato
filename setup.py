@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from setuptools import setup
+import sys
 
 setup(
     name='gpotato',
@@ -12,6 +13,7 @@ setup(
     url='https://github.com/astronouth7303/gpotato',
     packages=['gpotato'],
     data_files=['README.md', 'examples/test-gtk.py'],
+    install_requires=['asyncio'] if sys.version_info < (3,4) else [],
     long_description="""gpotato is a python library that implements a PEP 3156 interface for the GLib main event loop. It is designed to be used together with the tulip reference implementation.
 
 This is a work in progress. The code is experimental and may break at any time.
