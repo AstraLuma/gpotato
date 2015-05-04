@@ -1,5 +1,6 @@
 # gpotato - a PEP 3156 event loop based on GLib
 
+[![Build Status](https://travis-ci.org/astronouth7303/gpotato.svg?branch=master)](https://travis-ci.org/astronouth7303/gpotato)
 
 Gpotato is a python library that implements a [PEP 3156][PEP3156] interface for
 the [GLib main event loop][glibloop]. It is designed to be used together with
