@@ -24,6 +24,7 @@ class BaseEventLoopTests(unittest.TestCase):
 
     def setUp(self):
         self.loop = gpotato.GLibEventLoop(GLib.main_context_default())
+        self.loop.set_debug(True)
         self.loop._selector = unittest.mock.Mock()
         asyncio.set_event_loop(None)
 
@@ -314,6 +315,7 @@ class BaseEventLoopWithSelectorTests(unittest.TestCase):
 
     def setUp(self):
         self.loop = asyncio.new_event_loop()
+        self.loop.set_debug(True)
         asyncio.set_event_loop(None)
 
     def tearDown(self):
@@ -479,6 +481,9 @@ class BaseEventLoopWithSelectorTests(unittest.TestCase):
 
             def close(self):
                 self._sock.close()
+
+            def get_extra_info(self, name, default=None):
+                return "dummy:get_extra_info"
 
         def mock_make_ssl_transport(sock, protocol, sslcontext, waiter,
                                     **kwds):

@@ -27,5 +27,5 @@ This is a work in progress. The code is experimental and may break at any time.
         "Programming Language :: Python :: 3.3",
         "Topic :: Software Development :: Libraries :: Python Modules",
         ],
-    test_suite="tests",
+    setup_require=["nose"]
 )

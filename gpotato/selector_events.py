@@ -377,6 +377,24 @@ class _SelectorTransport(_FlowControlMixin, transports.Transport):
     def get_write_buffer_size(self):
         return len(self._buffer)
 
+    def _get_extra_info(self, name):
+        if name == 'peername':
+            return self._sock.getpeername
+        elif name == 'socket':
+            return lambda: self._sock
+        elif name == 'sockname':
+            return self._sock.getsockname
+        else:
+            raise KeyError
+
+    def get_extra_info(self, name, default=None):
+        try:
+            rv = self._get_extra_info(name)
+        except KeyError:
+            return default
+        else:
+            return rv()
+
 
 class _SelectorSocketTransport(_SelectorTransport):
 
@@ -493,7 +511,6 @@ class _SelectorSocketTransport(_SelectorTransport):
 
     def can_write_eof(self):
         return True
-
 
 class _SelectorSslTransport(_SelectorTransport):
 
@@ -708,6 +725,21 @@ class _SelectorSslTransport(_SelectorTransport):
 
     def can_write_eof(self):
         return False
+
+    def _get_extra_info(self, name):
+        try:
+            return super()._get_extra_info(name)
+        except KeyError:
+            if name == 'compression':
+                return self._sock.compression
+            elif name == 'cipher':
+                return self._sock.cipher
+            elif name == 'peercert':
+                return self._sock.getpeercert
+            elif name == 'sslcontext':
+                return lambda: self._sslcontext
+            else:
+                raise
 
 
 class _SelectorDatagramTransport(_SelectorTransport):
