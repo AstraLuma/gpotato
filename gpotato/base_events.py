@@ -97,6 +97,24 @@ class BaseEventLoop(events.AbstractEventLoop):
         self._default_executor = None
         self._internal_fds = 0
 #        self._running = False
+        self._debug = (not sys.flags.ignore_environment
+                       and bool(os.environ.get('PYTHONASYNCIODEBUG')))
+
+    def get_debug(self):
+        return self._debug
+
+    def set_debug(self, enabled):
+        self._debug = enabled
+
+    def create_task(self, coro):
+        """Schedule a coroutine object.
+
+        Return a task object.
+        """
+        task = tasks.Task(coro, loop=self)
+        if task._source_traceback:
+            del task._source_traceback[-1]
+        return task
 
     def _make_socket_transport(self, sock, protocol, waiter=None, *,
                                extra=None, server=None):
