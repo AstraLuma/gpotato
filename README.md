@@ -4,13 +4,12 @@
 
 Gpotato is a python library that implements a [PEP 3156][PEP3156] interface for
 the [GLib main event loop][glibloop]. It is designed to be used together with
-the [tulip reference implementation][tulip].
+the [asyncio module][asyncio].
 
 The code needs to be thoroughly tested, it should be considered as unstable for
 the moment.
 
-
-Anthony Baire
+This is a fork of the [gbulb project](https://pypi.python.org/pypi/gbulb/).
 
 ## Licence
 
@@ -100,6 +99,5 @@ third-party code calling directly GLib's primitives.
 
 
 [PEP3156]:  http://www.python.org/dev/peps/pep-3156/
-[tulip]:    http://code.google.com/p/tulip/
 [asyncio]:  https://pypi.python.org/pypi/asyncio
 [glibloop]: https://developer.gnome.org/glib/stable/glib-The-Main-Event-Loop.html
