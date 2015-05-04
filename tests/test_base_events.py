@@ -6,7 +6,7 @@ import socket
 import time
 import unittest
 import unittest.mock
-from test.support import find_unused_port, IPV6_ENABLED
+from testsupport import find_unused_port, IPV6_ENABLED
 
 import asyncio
 from asyncio import base_events
