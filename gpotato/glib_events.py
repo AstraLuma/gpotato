@@ -396,108 +396,6 @@ class BaseGLibEventLoop(unix_events.SelectorEventLoop):
     def time(self):
         return GLib.get_monotonic_time() / 1000000
 
-    # Methods for interacting with threads.
-
-#	def call_soon_threadsafe(self, callback, *args):
-#		raise NotImplementedError
-#
-#	def run_in_executor(self, executor, callback, *args):
-#		raise NotImplementedError
-#
-#	def set_default_executor(self, executor):
-#		raise NotImplementedError
-
-    # Network I/O methods returning Futures.
-
-#	def getaddrinfo(self, host, port, *, family=0, type=0, proto=0, flags=0):
-#		raise NotImplementedError
-#
-#	def getnameinfo(self, sockaddr, flags=0):
-#		raise NotImplementedError
-#
-#	def create_connection(self, protocol_factory, host=None, port=None, *,
-#						  ssl=None, family=0, proto=0, flags=0, sock=None,
-#						  local_addr=None):
-#		raise NotImplementedError
-#
-#	def start_serving(self, protocol_factory, host=None, port=None, *,
-#					  family=socket.AF_UNSPEC, flags=socket.AI_PASSIVE,
-#					  sock=None, backlog=100, ssl=None, reuse_address=None):
-#		"""A coroutine which creates a TCP server bound to host and
-#		port and whose result will be a list of socket objects which
-#		will later be handled by protocol_factory.
-#
-#		If host is an empty string or None all interfaces are assumed
-#		and a list of multiple sockets will be returned (most likely
-#		one for IPv4 and another one for IPv6).
-#
-#		family can be set to either AF_INET or AF_INET6 to force the
-#		socket to use IPv4 or IPv6. If not set it will be determined
-#		from host (defaults to AF_UNSPEC).
-#
-#		flags is a bitmask for getaddrinfo().
-#
-#		sock can optionally be specified in order to use a preexisting
-#		socket object.
-#
-#		backlog is the maximum number of queued connections passed to
-#		listen() (defaults to 100).
-#
-#		ssl can be set to an SSLContext to enable SSL over the
-#		accepted connections.
-#
-#		reuse_address tells the kernel to reuse a local socket in
-#		TIME_WAIT state, without waiting for its natural timeout to
-#		expire. If not specified will automatically be set to True on
-#		UNIX.
-#		"""
-#		raise NotImplementedError
-#
-#	def stop_serving(self, sock):
-#		"""Stop listening for incoming connections. Close socket."""
-#		raise NotImplementedError
-#
-#	def create_datagram_endpoint(self, protocol_factory,
-#								 local_addr=None, remote_addr=None, *,
-#								 family=0, proto=0, flags=0):
-#		raise NotImplementedError
-#
-#	def connect_read_pipe(self, protocol_factory, pipe):
-#		"""Register read pipe in eventloop.
-#
-#		protocol_factory should instantiate object with Protocol interface.
-#		pipe is file-like object already switched to nonblocking.
-#		Return pair (transport, protocol), where transport support
-#		ReadTransport ABC"""
-#		# The reason to accept file-like object instead of just file descriptor
-#		# is: we need to own pipe and close it at transport finishing
-#		# Can got complicated errors if pass f.fileno(),
-#		# close fd in pipe transport then close f and vise versa.
-#		raise NotImplementedError
-#
-#	def connect_write_pipe(self, protocol_factory, pipe):
-#		"""Register write pipe in eventloop.
-#
-#		protocol_factory should instantiate object with BaseProtocol interface.
-#		Pipe is file-like object already switched to nonblocking.
-#		Return pair (transport, protocol), where transport support
-#		WriteTransport ABC"""
-#		# The reason to accept file-like object instead of just file descriptor
-#		# is: we need to own pipe and close it at transport finishing
-#		# Can got complicated errors if pass f.fileno(),
-#		# close fd in pipe transport then close f and vise versa.
-#		raise NotImplementedError
-#
-#	def subprocess_shell(self, protocol_factory, cmd, *, stdin=subprocess.PIPE,
-#						 stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-#						 **kwargs):
-#		raise NotImplementedError
-#
-#	def subprocess_exec(self, protocol_factory, *args, stdin=subprocess.PIPE,
-#						stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-#						**kwargs):
-#		raise NotImplementedError
-
     # Ready-based callback registration methods.
     # The add_*() methods return None.
     # The remove_*() methods return True if something was removed,
@@ -547,20 +445,6 @@ class BaseGLibEventLoop(unix_events.SelectorEventLoop):
 
         except KeyError:
             return False
-
-    # Completion based I/O methods returning Futures.
-
-#	def sock_recv(self, sock, nbytes):
-#		raise NotImplementedError
-#
-#	def sock_sendall(self, sock, data):
-#		raise NotImplementedError
-#
-#	def sock_connect(self, sock, address):
-#		raise NotImplementedError
-#
-#	def sock_accept(self, sock):
-#		raise NotImplementedError
 
     # Signal handling.
 

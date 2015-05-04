@@ -16,18 +16,14 @@ to modify the meaning of the API call itself.
 
 import collections
 import concurrent.futures
-#import heapq
-import logging
 import socket
 import subprocess
-import time
 import os
 import sys
 
 from asyncio import events
 from asyncio import futures
 from asyncio import tasks
-from asyncio.log import logger
 from asyncio.base_events import Server
 
 
@@ -38,65 +34,11 @@ __all__ = ['BaseEventLoop']
 _MAX_WORKERS = 5
 
 
-#class _StopError(BaseException):
-#    """Raised to stop the event loop."""
-#
-#
-#def _raise_stop_error(*args):
-#    raise _StopError
-
-
-#class Server(events.AbstractServer):
-#
-#    def __init__(self, loop, sockets):
-#        self.loop = loop
-#        self.sockets = sockets
-#        self.active_count = 0
-#        self.waiters = []
-#
-#    def attach(self, transport):
-#        assert self.sockets is not None
-#        self.active_count += 1
-#
-#    def detach(self, transport):
-#        assert self.active_count > 0
-#        self.active_count -= 1
-#        if self.active_count == 0 and self.sockets is None:
-#            self._wakeup()
-#
-#    def close(self):
-#        sockets = self.sockets
-#        if sockets is not None:
-#            self.sockets = None
-#            for sock in sockets:
-#                self.loop._stop_serving(sock)
-#            if self.active_count == 0:
-#                self._wakeup()
-#
-#    def _wakeup(self):
-#        waiters = self.waiters
-#        self.waiters = None
-#        for waiter in waiters:
-#            if not waiter.done():
-#                waiter.set_result(waiter)
-#
-#    @tasks.coroutine
-#    def wait_closed(self):
-#        if self.sockets is None or self.waiters is None:
-#            return
-#        waiter = futures.Future(loop=self.loop)
-#        self.waiters.append(waiter)
-#        yield from waiter
-
-
 class BaseEventLoop(events.AbstractEventLoop):
 
     def __init__(self):
-#        self._ready = collections.deque()
-#        self._scheduled = []
         self._default_executor = None
         self._internal_fds = 0
-#        self._running = False
         self._debug = (not sys.flags.ignore_environment
                        and bool(os.environ.get('PYTHONASYNCIODEBUG')))
 
@@ -157,111 +99,16 @@ class BaseEventLoop(events.AbstractEventLoop):
         """XXX"""
         raise NotImplementedError
 
-#    def _process_events(self, event_list):
-#        """Process selector events."""
-#        raise NotImplementedError
-#
-#    def run_forever(self):
-#        """Run until stop() is called."""
-#        if self._running:
-#            raise RuntimeError('Event loop is running.')
-#        self._running = True
-#        try:
-#            while True:
-#                try:
-#                    self._run_once()
-#                except _StopError:
-#                    break
-#        finally:
-#            self._running = False
-#
-#    def run_until_complete(self, future):
-#        """Run until the Future is done.
-#
-#        If the argument is a coroutine, it is wrapped in a Task.
-#
-#        XXX TBD: It would be disastrous to call run_until_complete()
-#        with the same coroutine twice -- it would wrap it in two
-#        different Tasks and that can't be good.
-#
-#        Return the Future's result, or raise its exception.
-#        """
-#        future = tasks.async(future, loop=self)
-#        future.add_done_callback(_raise_stop_error)
-#        self.run_forever()
-#        future.remove_done_callback(_raise_stop_error)
-#        if not future.done():
-#            raise RuntimeError('Event loop stopped before Future completed.')
-#
-#        return future.result()
-#
-#    def stop(self):
-#        """Stop running the event loop.
-#
-#        Every callback scheduled before stop() is called will run.
-#        Callback scheduled after stop() is called won't.  However,
-#        those callbacks will run if run() is called again later.
-#        """
-#        self.call_soon(_raise_stop_error)
-
     def close(self):
         """Close the event loop.
 
         This clears the queues and shuts down the executor,
         but does not wait for the executor to finish.
         """
-#        self._ready.clear()
-#        self._scheduled.clear()
         executor = self._default_executor
         if executor is not None:
             self._default_executor = None
             executor.shutdown(wait=False)
-
-#    def is_running(self):
-#        """Returns running status of event loop."""
-#        return self._running
-#
-#    def time(self):
-#        """Return the time according to the event loop's clock."""
-#        return time.monotonic()
-#
-#    def call_later(self, delay, callback, *args):
-#        """Arrange for a callback to be called at a given time.
-#
-#        Return a Handle: an opaque object with a cancel() method that
-#        can be used to cancel the call.
-#
-#        The delay can be an int or float, expressed in seconds.  It is
-#        always a relative time.
-#
-#        Each callback will be called exactly once.  If two callbacks
-#        are scheduled for exactly the same time, it undefined which
-#        will be called first.
-#
-#        Any positional arguments after the callback will be passed to
-#        the callback when it is called.
-#        """
-#        return self.call_at(self.time() + delay, callback, *args)
-#
-#    def call_at(self, when, callback, *args):
-#        """Like call_later(), but uses an absolute time."""
-#        timer = events.TimerHandle(when, callback, args)
-#        heapq.heappush(self._scheduled, timer)
-#        return timer
-#
-#    def call_soon(self, callback, *args):
-#        """Arrange for a callback to be called as soon as possible.
-#
-#        This operates as a FIFO queue, callbacks are called in the
-#        order in which they are registered.  Each callback will be
-#        called exactly once.
-#
-#        Any positional arguments after the callback will be passed to
-#        the callback when it is called.
-#        """
-#        handle = events.Handle(callback, args)
-#        self._ready.append(handle)
-#        return handle
 
     def call_soon_threadsafe(self, callback, *args):
         """XXX"""
@@ -598,87 +445,3 @@ class BaseEventLoop(events.AbstractEventLoop):
         transport = yield from self._make_subprocess_transport(
             protocol, args, False, stdin, stdout, stderr, bufsize, **kwargs)
         return transport, protocol
-
-#    def _add_callback(self, handle):
-#        """Add a Handle to ready or scheduled."""
-#        assert isinstance(handle, events.Handle), 'A Handle is required here'
-#        if handle._cancelled:
-#            return
-#        if isinstance(handle, events.TimerHandle):
-#            heapq.heappush(self._scheduled, handle)
-#        else:
-#            self._ready.append(handle)
-#
-#    def _add_callback_signalsafe(self, handle):
-#        """Like _add_callback() but called from a signal handler."""
-#        self._add_callback(handle)
-#        self._write_to_self()
-#
-#    def _run_once(self):
-#        """Run one full iteration of the event loop.
-#
-#        This calls all currently ready callbacks, polls for I/O,
-#        schedules the resulting callbacks, and finally schedules
-#        'call_later' callbacks.
-#        """
-#        # Remove delayed calls that were cancelled from head of queue.
-#        while self._scheduled and self._scheduled[0]._cancelled:
-#            heapq.heappop(self._scheduled)
-#
-#        timeout = None
-#        if self._ready:
-#            timeout = 0
-#        elif self._scheduled:
-#            # Compute the desired timeout.
-#            when = self._scheduled[0]._when
-#            deadline = max(0, when - self.time())
-#            if timeout is None:
-#                timeout = deadline
-#            else:
-#                timeout = min(timeout, deadline)
-#
-#        # TODO: Instrumentation only in debug mode?
-#        if logger.isEnabledFor(logging.INFO):
-#            t0 = self.time()
-#            event_list = self._selector.select(timeout)
-#            t1 = self.time()
-#            if t1-t0 >= 1:
-#                level = logging.INFO
-#            else:
-#                level = logging.DEBUG
-#            if timeout is not None:
-#                logger.log(level, 'poll %.3f took %.3f seconds',
-#                           timeout, t1-t0)
-#            else:
-#                logger.log(level, 'poll took %.3f seconds', t1-t0)
-#        else:
-#            t0 = self.time()
-#            event_list = self._selector.select(timeout)
-#            dt = self.time() - t0
-#            if not event_list and timeout and dt < timeout:
-#                print("asyncio: selector.select(%.3f ms) took %.3f ms"
-#                      % (timeout*1e3, dt*1e3),
-#                      file=sys.__stderr__, flush=True)
-#        self._process_events(event_list)
-#
-#        # Handle 'later' callbacks that are ready.
-#        now = self.time()
-#        while self._scheduled:
-#            handle = self._scheduled[0]
-#            if handle._when > now:
-#                break
-#            handle = heapq.heappop(self._scheduled)
-#            self._ready.append(handle)
-#
-#        # This is the only place where callbacks are actually *called*.
-#        # All other places just add them to ready.
-#        # Note: We run all currently scheduled callbacks, but not any
-#        # callbacks scheduled by callbacks run this time around --
-#        # they will be run the next time (after another I/O poll).
-#        # Use an idiom that is threadsafe without using locks.
-#        ntodo = len(self._ready)
-#        for i in range(ntodo):
-#            handle = self._ready.popleft()
-#            if not handle._cancelled:
-#                handle._run()
-#        handle = None  # Needed to break cycles when an exception occurs.
