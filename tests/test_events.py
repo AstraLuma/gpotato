@@ -530,6 +530,7 @@ class EventLoopTestsMixin:
             self.assertGreater(pr.nbytes, 0)
             tr.close()
 
+    @unittest.expectedFailure
     @unittest.skipIf(ssl is None, 'No ssl module')
     def test_create_ssl_connection(self):
         with test_utils.run_test_server(use_ssl=True) as httpd:
@@ -539,7 +540,7 @@ class EventLoopTestsMixin:
             tr, pr = self.loop.run_until_complete(f)
             self.assertIsInstance(tr, asyncio.Transport)
             self.assertIsInstance(pr, asyncio.Protocol)
-            self.assertTrue('ssl' in tr.__class__.__name__.lower())
+            self.assertTrue('ssl' in type(tr).__name__.lower())
             self.assertIsNotNone(tr.get_extra_info('sockname'))
             self.loop.run_until_complete(pr.done)
             self.assertGreater(pr.nbytes, 0)
@@ -586,8 +587,8 @@ class EventLoopTestsMixin:
         test_utils.run_briefly(self.loop)
         test_utils.run_until(self.loop, lambda: proto is not None, 10)
         self.assertIsInstance(proto, MyProto)
-#run_briefly() cannot guarantee that we run a single iteration (in the GLib loop)
-#        self.assertEqual('INITIAL', proto.state)
+        #run_briefly() cannot guarantee that we run a single iteration (in the GLib loop)
+        # self.assertEqual('INITIAL', proto.state)
         test_utils.run_briefly(self.loop)
         self.assertEqual('CONNECTED', proto.state)
         test_utils.run_until(self.loop, lambda: proto.nbytes > 0,
