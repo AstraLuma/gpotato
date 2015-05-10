@@ -364,7 +364,7 @@ class _SelectorTransport(_FlowControlMixin, transports.Transport):
             self._loop = None
             server = self._server
             if server is not None:
-                server.detach(self)
+                server._detach()
                 self._server = None
 
     def get_write_buffer_size(self):
