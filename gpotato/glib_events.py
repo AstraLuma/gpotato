@@ -172,27 +172,16 @@ class BaseGLibEventLoop(unix_events.SelectorEventLoop):
             s.attach()
 
             self._source = s
-            self._loop   = None
+            self._loops = weakref.WeakSet()
 
         def attach(self, loop):
-            if self._loop:
-                l = self._loop()
-                if l and l != loop:
-                    logger.warning(
-                        "Multiple event loops for the GLib default context. "
-                        "SIGINT may not be caught reliably")
-
-            self._loop = weakref.ref(loop)
+            self._loops.add(loop)
 
         def detach(self, loop):
-            if self._loop:
-                l = self._loop()
-                if l == loop:
-                    self._loop = None
+            self._loops.remove(loop)
 
         def _callback(self):
-            if self._loop:
-                l = self._loop()
+            for l in self._loops:
                 if l:
                     def interrupt(loop):
                         loop._interrupted = True
