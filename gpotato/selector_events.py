@@ -313,13 +313,6 @@ class _SelectorTransport(_FlowControlMixin, transports.Transport):
 
     def __init__(self, loop, sock, protocol, extra, server=None):
         super().__init__(extra)
-        self._extra['socket'] = sock
-        self._extra['sockname'] = sock.getsockname()
-        if 'peername' not in self._extra:
-            try:
-                self._extra['peername'] = sock.getpeername()
-            except socket.error:
-                self._extra['peername'] = None
         self._loop = loop
         self._sock = sock
         self._sock_fd = sock.fileno()
@@ -329,7 +322,7 @@ class _SelectorTransport(_FlowControlMixin, transports.Transport):
         self._conn_lost = 0  # Set when call to connection_lost scheduled.
         self._closing = False  # Set when close() called.
         if self._server is not None:
-            self._server.attach(self)
+            self._server._attach()  # FIXME: AIO Internal API
 
     def abort(self):
         self._force_close(None)
@@ -558,9 +551,6 @@ class _SelectorSslTransport(_SelectorTransport):
         self._sslcontext = sslcontext
         self._paused = False
 
-        # SSL-specific extra info.  (peercert is set later)
-        self._extra.update(sslcontext=sslcontext)
-
         self._on_handshake()
 
     def _on_handshake(self):
@@ -603,12 +593,6 @@ class _SelectorSslTransport(_SelectorTransport):
                     if self._waiter is not None:
                         self._waiter.set_exception(exc)
                     return
-
-        # Add extra info that becomes available after handshake.
-        self._extra.update(peercert=peercert,
-                           cipher=self._sock.cipher(),
-                           compression=self._sock.compression(),
-                           )
 
         self._read_wants_write = False
         self._write_wants_read = False
