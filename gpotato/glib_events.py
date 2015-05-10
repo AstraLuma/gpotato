@@ -168,7 +168,7 @@ class BaseGLibEventLoop(unix_events.SelectorEventLoop):
     class DefaultSigINTHandler:
         def __init__(self):
             s = GLib.unix_signal_source_new(signal.SIGINT)
-            s.set_callback(self.__class__._callback, self)
+            s.set_callback(type(self)._callback, self)
             s.attach()
 
             self._source = s
@@ -449,12 +449,21 @@ class BaseGLibEventLoop(unix_events.SelectorEventLoop):
                 raise ValueError("signal not supported")
 
         assert sig not in self._sighandlers
+
+        if sig == signal.SIGINT:
+            self._default_sigint_handler.detach(self)
+
+        # FIXME: If a signal comes in _now_, it might be missed?
+
         self._sighandlers[sig] = GLibHandle(self, s, True, callback, args)
 
     def remove_signal_handler(self, sig):
         self._check_signal(sig)
         try:
             self._sighandlers.pop(sig).cancel()
+            # FIXME: If a signal comes in _now_, it might be missed?
+            if sig == signal.SIGINT:
+                self._default_sigint_handler.attach(self)
             return True
 
         except KeyError:
