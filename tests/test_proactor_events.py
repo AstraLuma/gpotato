@@ -439,7 +439,8 @@ class BaseProactorEventLoopTests(unittest.TestCase):
     def test_process_events(self):
         self.loop._process_events([])
 
-    @unittest.mock.patch('asyncio.proactor_events.logger')
+    @unittest.expectedFailure
+    @unittest.mock.patch('asyncio.log.logger')
     def test_create_server(self, m_log):
         pf = unittest.mock.Mock()
         call_soon = self.loop.call_soon = unittest.mock.Mock()
