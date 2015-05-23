@@ -9,6 +9,8 @@ before_install:
   - sudo apt-get install -qq python3-gi gir1.2-gtk-3.0
 
 # command to install dependencies
-install: "make develop"
+install: 
+  - python3 setup.py develop
 # command to run tests
-script: "make test"
+script:
+  - cd tests && python3 -m unittest -bv
