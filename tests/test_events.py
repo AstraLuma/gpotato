@@ -1703,7 +1703,7 @@ class HandleTests(LoopSetupMixin, unittest.TestCase):
         h._run()
         self.assertTrue(log.exception.called)
 
-
+@unittest.skip("TimerHandle unused by gpotato")
 class TimerTests(LoopSetupMixin, unittest.TestCase):
 
     def test_hash(self):
