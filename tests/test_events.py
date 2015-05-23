@@ -1297,13 +1297,14 @@ class SubprocessTestsMixin:
         self.assertTrue(all(f.done() for f in proto.disconnects.values()))
         self.assertEqual(proto.data[1].rstrip(b'\r\n'), b'Python')
         self.assertEqual(proto.data[2], b'')
+        transp.close()
 
     def test_subprocess_exitcode(self):
-        proto = None
+        proto = transp = None
 
         @asyncio.coroutine
         def connect():
-            nonlocal proto
+            nonlocal proto, transp
             transp, proto = yield from self.loop.subprocess_shell(
                 functools.partial(MySubprocessProtocol, self.loop),
                 'exit 7', stdin=None, stdout=None, stderr=None)
@@ -1312,6 +1313,7 @@ class SubprocessTestsMixin:
         self.loop.run_until_complete(connect())
         self.loop.run_until_complete(proto.completed)
         self.assertEqual(7, proto.returncode)
+        transp.close()
 
     def test_subprocess_close_after_finish(self):
         proto = None
@@ -1353,6 +1355,7 @@ class SubprocessTestsMixin:
         transp.kill()
         self.loop.run_until_complete(proto.completed)
         self.check_killed(proto.returncode)
+        transp.close()
 
     def test_subprocess_terminate(self):
         proto = None
@@ -1374,6 +1377,7 @@ class SubprocessTestsMixin:
         transp.terminate()
         self.loop.run_until_complete(proto.completed)
         self.check_terminated(proto.returncode)
+        transp.close()
 
     @unittest.skipIf(sys.platform == 'win32', "Don't have SIGHUP")
     def test_subprocess_send_signal(self):
@@ -1396,6 +1400,7 @@ class SubprocessTestsMixin:
         transp.send_signal(signal.SIGHUP)
         self.loop.run_until_complete(proto.completed)
         self.assertEqual(-signal.SIGHUP, proto.returncode)
+        transp.close()
 
     def test_subprocess_stderr(self):
         proto = None
@@ -1510,6 +1515,7 @@ class SubprocessTestsMixin:
         self.loop.run_until_complete(connect())
         self.loop.run_until_complete(proto.completed)
         self.assertEqual(7, proto.returncode)
+        transp.close()
 
     def test_subprocess_exec_invalid_args(self):
         @asyncio.coroutine
