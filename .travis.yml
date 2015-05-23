@@ -4,15 +4,24 @@ python:
   - "3.4"
   - "nightly"
 
-virtualenv:
-  system_site_packages: true
-
-before_install:
-  - sudo apt-get update
-  - sudo apt-get install -qq python3-gi gir1.2-gtk-3.0
+sudo: false
+addons:
+  apt:
+    packages:
+    - libgtk-3-dev
 
 # command to install dependencies
 install: 
+  # Install PyGObject
+  - wget http://ftp.gnome.org/pub/GNOME/sources/pygobject/3.16/pygobject-3.16.1.tar.xz -O pygobject.tar.xz
+  - tar xf pygobject.tar.xz
+  - cd pygobject-3.16.1
+  - ./configure --prefix=$VIRT_ROOT
+  - make
+  - make install
+  - cd ..
+  
+  # Other PyPI dependencies
   - python3 setup.py develop
 # command to run tests
 script:
