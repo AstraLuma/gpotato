@@ -111,27 +111,27 @@ class FutureTests(unittest.TestCase):
 
     def test_repr(self):
         f_pending = asyncio.Future(loop=self.loop)
-        self.assertEqual(repr(f_pending), 'Future<PENDING>')
+        self.assertEqual(repr(f_pending), '<Future pending>')
         f_pending.cancel()
 
         f_cancelled = asyncio.Future(loop=self.loop)
         f_cancelled.cancel()
-        self.assertEqual(repr(f_cancelled), 'Future<CANCELLED>')
+        self.assertEqual(repr(f_cancelled), '<Future cancelled>')
 
         f_result = asyncio.Future(loop=self.loop)
         f_result.set_result(4)
-        self.assertEqual(repr(f_result), 'Future<result=4>')
+        self.assertEqual(repr(f_result), '<Future finished result=4>')
         self.assertEqual(f_result.result(), 4)
 
         exc = RuntimeError()
         f_exception = asyncio.Future(loop=self.loop)
         f_exception.set_exception(exc)
-        self.assertEqual(repr(f_exception), 'Future<exception=RuntimeError()>')
+        self.assertEqual(repr(f_exception), '<Future finished exception=RuntimeError()>')
         self.assertIs(f_exception.exception(), exc)
 
         f_few_callbacks = asyncio.Future(loop=self.loop)
         f_few_callbacks.add_done_callback(_fakefunc)
-        self.assertIn('Future<PENDING, [<function _fakefunc',
+        self.assertIn('<Future pending cb=[_fakefunc',
                       repr(f_few_callbacks))
         f_few_callbacks.cancel()
 
@@ -139,7 +139,7 @@ class FutureTests(unittest.TestCase):
         for i in range(20):
             f_many_callbacks.add_done_callback(_fakefunc)
         r = repr(f_many_callbacks)
-        self.assertIn('Future<PENDING, [<function _fakefunc', r)
+        self.assertIn('<Future pending cb=[_fakefunc', r)
         self.assertIn('<18 more>', r)
         f_many_callbacks.cancel()
 
