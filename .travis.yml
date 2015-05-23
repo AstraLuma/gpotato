@@ -14,9 +14,9 @@ addons:
 # command to install dependencies
 install: 
   # Install PyGObject
-  - wget http://ftp.gnome.org/pub/GNOME/sources/pygobject/3.16/pygobject-3.16.1.tar.xz -O pygobject.tar.xz
+  - wget http://ftp.gnome.org/pub/GNOME/sources/pygobject/3.2/pygobject-3.2.2.tar.xz -O pygobject.tar.xz
   - tar xf pygobject.tar.xz
-  - cd pygobject-3.16.1
+  - cd pygobject-3.2.2
   - ./configure --prefix=$VIRT_ROOT
   - make
   - make install
