@@ -1914,7 +1914,7 @@ class PolicyTests(unittest.TestCase):
     def test_get_event_loop_after_set_none(self):
         policy = asyncio.DefaultEventLoopPolicy()
         policy.set_event_loop(None)
-        self.assertRaises(AssertionError, policy.get_event_loop)
+        self.assertRaises(RuntimeError, policy.get_event_loop)
 
     @unittest.mock.patch('asyncio.events.threading.current_thread')
     def test_get_event_loop_thread(self, m_current_thread):
