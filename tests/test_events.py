@@ -1504,7 +1504,7 @@ class SubprocessTestsMixin:
 
         @asyncio.coroutine
         def connect():
-            nonlocal proto
+            nonlocal proto, transp
             # start the new process in a new session
             transp, proto = yield from self.loop.subprocess_shell(
                 functools.partial(MySubprocessProtocol, self.loop),
