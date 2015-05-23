@@ -203,8 +203,7 @@ class MySubprocessProtocol(asyncio.SubprocessProtocol):
         self.returncode = self.transport.get_returncode()
 
 
-class EventLoopTestsMixin:
-
+class LoopSetupMixin:
     def setUp(self):
         super().setUp()
         self.loop = self.create_event_loop()
@@ -217,6 +216,12 @@ class EventLoopTestsMixin:
         self.loop.close()
         gc.collect()
         super().tearDown()
+
+    def create_event_loop(self):
+        # Just a default, for test sets that don't care
+        return gpotato.GLibEventLoop(GLib.main_context_default())
+
+class EventLoopTestsMixin(LoopSetupMixin):
 
     def test_run_until_complete_nesting(self):
         @asyncio.coroutine
@@ -1656,7 +1661,7 @@ else:
                 return gpotato.GLibEventLoop(gtk=True)
 
 
-class HandleTests(unittest.TestCase):
+class HandleTests(LoopSetupMixin, unittest.TestCase):
 
     def test_handle(self):
         def callback(*args):
@@ -1683,19 +1688,20 @@ class HandleTests(unittest.TestCase):
             '<function HandleTests.test_handle.<locals>.callback'))
         self.assertTrue(r.endswith('())<cancelled>'), r)
 
-    def test_handle(self):
+    def test_handle_assertion(self):
         def callback(*args):
             return args
         h1 = asyncio.Handle(callback, ())
         self.assertRaises(
             AssertionError, asyncio.Handle, h1, ())
 
-    @unittest.mock.patch('asyncio.events.logger')
+    @unittest.expectedFailure
+    @unittest.mock.patch('asyncio.log.logger')
     def test_callback_with_exception(self, log):
         def callback():
             raise ValueError()
 
-        h = asyncio.Handle(callback, ())
+        h = asyncio.Handle(callback, (), self.loop)
         h._run()
         self.assertTrue(log.exception.called)
 
