@@ -1,5 +1,6 @@
 language: python
 python:
+  - "3.2"
   - "3.3"
   - "3.4"
   - "nightly"
@@ -11,14 +12,19 @@ addons:
       - libglib2.0-dev
       - libgtk-3-dev
       - libffi-dev
+      - python3-dev
+
+env:
+  - GOBJECT_VERDIR=3.2
+  - GOBJECT_VERSION=3.2.2
 
 # command to install dependencies
 install: 
   - export PKG_CONFIG_PATH=$VIRT_ROOT/lib/pkgconfig
   # Install PyGObject
-  - wget http://ftp.gnome.org/pub/GNOME/sources/pygobject/3.2/pygobject-3.2.2.tar.xz -O pygobject.tar.xz
-  - tar xf pygobject.tar.xz
-  - cd pygobject-3.2.2
+  - wget http://ftp.gnome.org/pub/GNOME/sources/pygobject/$GOBJECT_VERDIR/pygobject-$GOBJECT_VERSION.tar.xz
+  - tar xf pygobject-$GOBJECT_VERSION.tar.xz
+  - cd pygobject-$GOBJECT_VERSION
   - ./configure --prefix=$VIRT_ROOT
   - make
   - make install
