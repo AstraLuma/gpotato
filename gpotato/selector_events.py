@@ -59,9 +59,7 @@ class BaseSelectorEventLoop(base_events.BaseEventLoop):
     def _close_self_pipe(self):
         self.remove_reader(self._ssock.fileno())
         self._ssock.close()
-        self._ssock = None
         self._csock.close()
-        self._csock = None
         self._internal_fds -= 1
 
     def _make_self_pipe(self):
