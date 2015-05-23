@@ -1704,11 +1704,11 @@ class HandleTests(LoopSetupMixin, unittest.TestCase):
         self.assertTrue(log.exception.called)
 
 
-class TimerTests(unittest.TestCase):
+class TimerTests(LoopSetupMixin, unittest.TestCase):
 
     def test_hash(self):
         when = time.monotonic()
-        h = asyncio.TimerHandle(when, lambda: False, ())
+        h = asyncio.TimerHandle(when, lambda: False, (), self.loop)
         self.assertEqual(hash(h), hash(when))
 
     def test_timer(self):
@@ -1717,7 +1717,7 @@ class TimerTests(unittest.TestCase):
 
         args = ()
         when = time.monotonic()
-        h = asyncio.TimerHandle(when, callback, args)
+        h = asyncio.TimerHandle(when, callback, args, self.loop)
         self.assertIs(h._callback, callback)
         self.assertIs(h._args, args)
         self.assertFalse(h._cancelled)
@@ -1740,8 +1740,8 @@ class TimerTests(unittest.TestCase):
 
         when = time.monotonic()
 
-        h1 = asyncio.TimerHandle(when, callback, ())
-        h2 = asyncio.TimerHandle(when, callback, ())
+        h1 = asyncio.TimerHandle(when, callback, (), self.loop)
+        h2 = asyncio.TimerHandle(when, callback, (), self.loop)
         # TODO: Use assertLess etc.
         self.assertFalse(h1 < h2)
         self.assertFalse(h2 < h1)
@@ -1757,8 +1757,8 @@ class TimerTests(unittest.TestCase):
         h2.cancel()
         self.assertFalse(h1 == h2)
 
-        h1 = asyncio.TimerHandle(when, callback, ())
-        h2 = asyncio.TimerHandle(when + 10.0, callback, ())
+        h1 = asyncio.TimerHandle(when, callback, (), self.loop)
+        h2 = asyncio.TimerHandle(when + 10.0, callback, (), self.loop)
         self.assertTrue(h1 < h2)
         self.assertFalse(h2 < h1)
         self.assertTrue(h1 <= h2)
