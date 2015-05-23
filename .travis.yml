@@ -18,10 +18,13 @@ env:
   global:
     - GOBJECT_VERDIR=3.2
     - GOBJECT_VERSION=3.2.2
+    - PKG_CONFIG_PATH=$VIRT_ROOT/lib/pkgconfig
 
 # command to install dependencies
 install: 
-  - export PKG_CONFIG_PATH=$VIRT_ROOT/lib/pkgconfig
+  - echo $VIRT_ROOT
+  - echo $PKG_CONFIG_PATH
+
   # Install PyGObject
   - wget http://ftp.gnome.org/pub/GNOME/sources/pygobject/$GOBJECT_VERDIR/pygobject-$GOBJECT_VERSION.tar.xz
   - tar xf pygobject-$GOBJECT_VERSION.tar.xz
