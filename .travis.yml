@@ -15,7 +15,9 @@ addons:
       - python3-dev
 
 env:
-  - GOBJECT_VERDIR=3.2 GOBJECT_VERSION=3.2.2
+  global:
+    - GOBJECT_VERDIR=3.2
+    - GOBJECT_VERSION=3.2.2
 
 # command to install dependencies
 install: 
