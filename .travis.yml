@@ -22,8 +22,7 @@ env:
 
 # command to install dependencies
 install: 
-  - echo $VIRT_ROOT
-  - echo $PKG_CONFIG_PATH
+  - env | sort
 
   # Install PyGObject
   - wget http://ftp.gnome.org/pub/GNOME/sources/pygobject/$GOBJECT_VERDIR/pygobject-$GOBJECT_VERSION.tar.xz
