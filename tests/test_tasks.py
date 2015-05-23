@@ -8,6 +8,13 @@ from unittest.mock import Mock
 import asyncio
 from asyncio import test_utils
 
+import gpotato
+from gi.repository import GLib
+from gi.repository import GObject
+
+gpotato.BaseGLibEventLoop.init_class()
+GObject.threads_init()
+
 
 class Dummy:
 
@@ -21,7 +28,7 @@ class Dummy:
 class TaskTests(unittest.TestCase):
 
     def setUp(self):
-        self.loop = test_utils.TestLoop()
+        self.loop = gpotato.GLibEventLoop(GLib.main_context_default())
         asyncio.set_event_loop(None)
 
     def tearDown(self):
@@ -380,7 +387,7 @@ class TaskTests(unittest.TestCase):
         self.assertEqual(foo_running, False)
 
     def test_wait_for_blocking(self):
-        loop = test_utils.TestLoop()
+        loop = gpotato.GLibEventLoop(GLib.main_context_default())
         self.addCleanup(loop.close)
 
         @asyncio.coroutine
@@ -1344,8 +1351,9 @@ class TaskTests(unittest.TestCase):
 class GatherTestsBase:
 
     def setUp(self):
-        self.one_loop = test_utils.TestLoop()
-        self.other_loop = test_utils.TestLoop()
+        # FIXME: These should be different contexts
+        self.one_loop = gpotato.GLibEventLoop(GLib.main_context_default())
+        self.other_loop = gpotato.GLibEventLoop(GLib.main_context_default())
 
     def tearDown(self):
         self.one_loop.close()

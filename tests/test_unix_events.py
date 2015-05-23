@@ -343,7 +343,7 @@ class SelectorEventLoopTests(unittest.TestCase):
 class UnixReadPipeTransportTests(unittest.TestCase):
 
     def setUp(self):
-        self.loop = test_utils.TestLoop()
+        self.loop = gpotato.GLibEventLoop(GLib.main_context_default())
         self.protocol = test_utils.make_test_protocol(asyncio.Protocol)
         self.pipe = unittest.mock.Mock(spec_set=io.RawIOBase)
         self.pipe.fileno.return_value = 5
@@ -506,7 +506,7 @@ class UnixReadPipeTransportTests(unittest.TestCase):
 class UnixWritePipeTransportTests(unittest.TestCase):
 
     def setUp(self):
-        self.loop = test_utils.TestLoop()
+        self.loop = gpotato.GLibEventLoop(GLib.main_context_default())
         self.protocol = test_utils.make_test_protocol(asyncio.BaseProtocol)
         self.pipe = unittest.mock.Mock(spec_set=io.RawIOBase)
         self.pipe.fileno.return_value = 5
@@ -859,7 +859,7 @@ class ChildWatcherTestsMixin:
     ignore_warnings = unittest.mock.patch.object(log.logger, "warning")
 
     def setUp(self):
-        self.loop = test_utils.TestLoop()
+        self.loop = gpotato.GLibEventLoop(GLib.main_context_default())
         self.running = False
         self.zombies = {}
 
@@ -1418,7 +1418,7 @@ class ChildWatcherTestsMixin:
 
         # attach a new loop
         old_loop = self.loop
-        self.loop = test_utils.TestLoop()
+        self.loop = gpotato.GLibEventLoop(GLib.main_context_default())
 
         with unittest.mock.patch.object(
                 old_loop,
@@ -1476,7 +1476,7 @@ class ChildWatcherTestsMixin:
         self.assertFalse(callback3.called)
 
         # attach a new loop
-        self.loop = test_utils.TestLoop()
+        self.loop = gpotato.GLibEventLoop(GLib.main_context_default())
 
         with unittest.mock.patch.object(
                 self.loop, "add_signal_handler") as m_add_signal_handler:

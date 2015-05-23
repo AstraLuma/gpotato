@@ -7,6 +7,13 @@ from test import support
 if sys.platform != 'win32':
     from asyncio import unix_events
 
+import gpotato
+from gi.repository import GLib
+from gi.repository import GObject
+
+gpotato.BaseGLibEventLoop.init_class()
+GObject.threads_init()
+
 # Program blocking
 PROGRAM_BLOCKED = [sys.executable, '-c', 'import time; time.sleep(3600)']
 

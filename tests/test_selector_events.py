@@ -610,7 +610,7 @@ class BaseSelectorEventLoopTests(unittest.TestCase):
 class SelectorTransportTests(unittest.TestCase):
 
     def setUp(self):
-        self.loop = GLibTestLoop(GLib.main_context_default())#test_utils.TestLoop()
+        self.loop = GLibTestLoop(GLib.main_context_default())
         self.protocol = test_utils.make_test_protocol(asyncio.Protocol)
         self.sock = unittest.mock.Mock(socket.socket)
         self.sock.fileno.return_value = 7
@@ -697,7 +697,7 @@ class SelectorTransportTests(unittest.TestCase):
 class SelectorSocketTransportTests(unittest.TestCase):
 
     def setUp(self):
-        self.loop = test_utils.TestLoop()
+        self.loop = GLibTestLoop(GLib.main_context_default())
         self.protocol = test_utils.make_test_protocol(asyncio.Protocol)
         self.sock = unittest.mock.Mock(socket.socket)
         self.sock_fd = self.sock.fileno.return_value = 7
@@ -1062,7 +1062,7 @@ class SelectorSocketTransportTests(unittest.TestCase):
 class SelectorSslTransportTests(unittest.TestCase):
 
     def setUp(self):
-        self.loop = test_utils.TestLoop()
+        self.loop = GLibTestLoop(GLib.main_context_default())
         self.protocol = test_utils.make_test_protocol(asyncio.Protocol)
         self.sock = unittest.mock.Mock(socket.socket)
         self.sock.fileno.return_value = 7
@@ -1391,7 +1391,7 @@ class SelectorSslWithoutSslTransportTests(unittest.TestCase):
 class SelectorDatagramTransportTests(unittest.TestCase):
 
     def setUp(self):
-        self.loop = test_utils.TestLoop()
+        self.loop = GLibTestLoop(GLib.main_context_default())
         self.protocol = test_utils.make_test_protocol(asyncio.DatagramProtocol)
         self.sock = unittest.mock.Mock(spec_set=socket.socket)
         self.sock.fileno.return_value = 7

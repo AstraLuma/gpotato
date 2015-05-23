@@ -6,11 +6,18 @@ import unittest.mock
 import asyncio
 from asyncio import test_utils
 
+import gpotato
+from gi.repository import GLib
+from gi.repository import GObject
+
+gpotato.BaseGLibEventLoop.init_class()
+GObject.threads_init()
+
 
 class _QueueTestBase(unittest.TestCase):
 
     def setUp(self):
-        self.loop = test_utils.TestLoop()
+        self.loop = gpotato.GLibEventLoop(GLib.main_context_default())
         asyncio.set_event_loop(None)
 
     def tearDown(self):
@@ -32,7 +39,7 @@ class QueueBasicTests(_QueueTestBase):
             self.assertAlmostEqual(0.2, when)
             yield 0.1
 
-        loop = test_utils.TestLoop(gen)
+        loop = gpotato.GLibEventLoop(GLib.main_context_default())
         self.addCleanup(loop.close)
 
         q = asyncio.Queue(loop=loop)
@@ -126,7 +133,7 @@ class QueueBasicTests(_QueueTestBase):
             self.assertAlmostEqual(0.02, when)
             yield 0.01
 
-        loop = test_utils.TestLoop(gen)
+        loop = gpotato.GLibEventLoop(GLib.main_context_default())
         self.addCleanup(loop.close)
 
         q = asyncio.Queue(maxsize=2, loop=loop)
@@ -194,7 +201,7 @@ class QueueGetTests(_QueueTestBase):
             self.assertAlmostEqual(0.01, when)
             yield 0.01
 
-        loop = test_utils.TestLoop(gen)
+        loop = gpotato.GLibEventLoop(GLib.main_context_default())
         self.addCleanup(loop.close)
 
         q = asyncio.Queue(loop=loop)
@@ -241,7 +248,7 @@ class QueueGetTests(_QueueTestBase):
             self.assertAlmostEqual(0.061, when)
             yield 0.05
 
-        loop = test_utils.TestLoop(gen)
+        loop = gpotato.GLibEventLoop(GLib.main_context_default())
         self.addCleanup(loop.close)
 
         q = asyncio.Queue(loop=loop)
@@ -302,7 +309,7 @@ class QueuePutTests(_QueueTestBase):
             self.assertAlmostEqual(0.01, when)
             yield 0.01
 
-        loop = test_utils.TestLoop(gen)
+        loop = gpotato.GLibEventLoop(GLib.main_context_default())
         self.addCleanup(loop.close)
 
         q = asyncio.Queue(maxsize=1, loop=loop)

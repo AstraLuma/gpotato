@@ -7,6 +7,13 @@ import re
 import asyncio
 from asyncio import test_utils
 
+import gpotato
+from gi.repository import GLib
+from gi.repository import GObject
+
+gpotato.BaseGLibEventLoop.init_class()
+GObject.threads_init()
+
 
 STR_RGX_REPR = (
     r'^<(?P<class>.*?) object at (?P<address>.*?)'
@@ -20,7 +27,7 @@ RGX_REPR = re.compile(STR_RGX_REPR)
 class LockTests(unittest.TestCase):
 
     def setUp(self):
-        self.loop = test_utils.TestLoop()
+        self.loop = gpotato.GLibEventLoop(GLib.main_context_default())
         asyncio.set_event_loop(None)
 
     def tearDown(self):
@@ -243,7 +250,7 @@ class LockTests(unittest.TestCase):
 class EventTests(unittest.TestCase):
 
     def setUp(self):
-        self.loop = test_utils.TestLoop()
+        self.loop = gpotato.GLibEventLoop(GLib.main_context_default())
         asyncio.set_event_loop(None)
 
     def tearDown(self):
@@ -379,7 +386,7 @@ class EventTests(unittest.TestCase):
 class ConditionTests(unittest.TestCase):
 
     def setUp(self):
-        self.loop = test_utils.TestLoop()
+        self.loop = gpotato.GLibEventLoop(GLib.main_context_default())
         asyncio.set_event_loop(None)
 
     def tearDown(self):
@@ -681,7 +688,7 @@ class ConditionTests(unittest.TestCase):
 class SemaphoreTests(unittest.TestCase):
 
     def setUp(self):
-        self.loop = test_utils.TestLoop()
+        self.loop = gpotato.GLibEventLoop(GLib.main_context_default())
         asyncio.set_event_loop(None)
 
     def tearDown(self):

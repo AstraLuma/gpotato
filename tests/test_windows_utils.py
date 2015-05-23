@@ -13,6 +13,13 @@ import _winapi
 from asyncio import windows_utils
 from asyncio import _overlapped
 
+import gpotato
+from gi.repository import GLib
+from gi.repository import GObject
+
+gpotato.BaseGLibEventLoop.init_class()
+GObject.threads_init()
+
 
 class WinsocketpairTests(unittest.TestCase):
 

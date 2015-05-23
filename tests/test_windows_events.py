@@ -12,6 +12,13 @@ from asyncio import test_utils
 from asyncio import _overlapped
 from asyncio import windows_events
 
+import gpotato
+from gi.repository import GLib
+from gi.repository import GObject
+
+gpotato.BaseGLibEventLoop.init_class()
+GObject.threads_init()
+
 
 class UpperProto(asyncio.Protocol):
     def __init__(self):

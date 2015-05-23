@@ -11,6 +11,13 @@ except ImportError:
 import asyncio
 from asyncio import test_utils
 
+import gpotato
+from gi.repository import GLib
+from gi.repository import GObject
+
+gpotato.BaseGLibEventLoop.init_class()
+GObject.threads_init()
+
 
 class StreamReaderTests(unittest.TestCase):
 

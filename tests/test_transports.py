@@ -5,6 +5,13 @@ import unittest.mock
 
 import asyncio
 
+import gpotato
+from gi.repository import GLib
+from gi.repository import GObject
+
+gpotato.BaseGLibEventLoop.init_class()
+GObject.threads_init()
+
 
 class TransportTests(unittest.TestCase):
 

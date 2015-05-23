@@ -8,6 +8,13 @@ import unittest.mock
 import asyncio
 from asyncio import test_utils
 
+import gpotato
+from gi.repository import GLib
+from gi.repository import GObject
+
+gpotato.BaseGLibEventLoop.init_class()
+GObject.threads_init()
+
 
 def _fakefunc(f):
     return f
@@ -16,7 +23,7 @@ def _fakefunc(f):
 class FutureTests(unittest.TestCase):
 
     def setUp(self):
-        self.loop = test_utils.TestLoop()
+        self.loop = gpotato.GLibEventLoop(GLib.main_context_default())
         asyncio.set_event_loop(None)
 
     def tearDown(self):
@@ -267,7 +274,7 @@ class FutureTests(unittest.TestCase):
 class FutureDoneCallbackTests(unittest.TestCase):
 
     def setUp(self):
-        self.loop = test_utils.TestLoop()
+        self.loop = gpotato.GLibEventLoop(GLib.main_context_default())
         asyncio.set_event_loop(None)
 
     def tearDown(self):

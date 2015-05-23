@@ -5,6 +5,13 @@ import unittest.mock
 
 from asyncio import selectors
 
+import gpotato
+from gi.repository import GLib
+from gi.repository import GObject
+
+gpotato.BaseGLibEventLoop.init_class()
+GObject.threads_init()
+
 
 class FakeSelector(selectors._BaseSelectorImpl):
     """Trivial non-abstract subclass of BaseSelector."""
