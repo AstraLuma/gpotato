@@ -1668,30 +1668,28 @@ class HandleTests(LoopSetupMixin, unittest.TestCase):
             return args
 
         args = ()
-        h = asyncio.Handle(callback, args)
+        h = asyncio.Handle(callback, args, self.loop)
         self.assertIs(h._callback, callback)
         self.assertIs(h._args, args)
         self.assertFalse(h._cancelled)
 
         r = repr(h)
         self.assertTrue(r.startswith(
-            'Handle('
-            '<function HandleTests.test_handle.<locals>.callback'))
-        self.assertTrue(r.endswith('())'))
+            '<Handle '
+            'HandleTests.test_handle.<locals>.callback'))
+        self.assertTrue(r.endswith('>'))
 
         h.cancel()
         self.assertTrue(h._cancelled)
 
         r = repr(h)
-        self.assertTrue(r.startswith(
-            'Handle('
-            '<function HandleTests.test_handle.<locals>.callback'))
-        self.assertTrue(r.endswith('())<cancelled>'), r)
+        self.assertTrue(r.startswith('<Handle'))
+        self.assertTrue(r.endswith('cancelled>'), r)
 
     def test_handle_assertion(self):
         def callback(*args):
             return args
-        h1 = asyncio.Handle(callback, ())
+        h1 = asyncio.Handle(callback, (), self.loop)
         self.assertRaises(
             AssertionError, asyncio.Handle, h1, ())
 
