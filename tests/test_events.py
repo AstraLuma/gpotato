@@ -1723,13 +1723,13 @@ class TimerTests(LoopSetupMixin, unittest.TestCase):
         self.assertFalse(h._cancelled)
 
         r = repr(h)
-        self.assertTrue(r.endswith('())'))
+        self.assertTrue(r.endswith('>'))
 
         h.cancel()
         self.assertTrue(h._cancelled)
 
         r = repr(h)
-        self.assertTrue(r.endswith('())<cancelled>'), r)
+        self.assertTrue(r.endswith(' cancelled>'), r)
 
         self.assertRaises(AssertionError,
                           asyncio.TimerHandle, None, callback, args)
