@@ -1213,6 +1213,9 @@ class SubprocessTestsMixin:
         else:
             self.assertEqual(-signal.SIGKILL, returncode)
 
+    def check_subp_closed(self, proto):
+        self.check_killed(proto.returncode)
+
     def test_subprocess_exec(self):
         proto = None
         transp = None
@@ -1236,7 +1239,7 @@ class SubprocessTestsMixin:
         self.loop.run_until_complete(proto.got_data[1].wait())
         transp.close()
         self.loop.run_until_complete(proto.completed)
-        self.check_terminated(proto.returncode)
+        self.check_subp_closed(proto)
         self.assertEqual(b'Python The Winner', proto.data[1])
 
     def test_subprocess_interactive(self):
@@ -1271,7 +1274,7 @@ class SubprocessTestsMixin:
             transp.close()
 
         self.loop.run_until_complete(proto.completed)
-        self.check_terminated(proto.returncode)
+        self.check_subp_closed(proto)
 
     def test_subprocess_shell(self):
         proto = None
@@ -1488,7 +1491,7 @@ class SubprocessTestsMixin:
             self.assertEqual(b'ERR:OSError', proto.data[2])
         transp.close()
         self.loop.run_until_complete(proto.completed)
-        self.check_killed(proto.returncode)
+        self.check_subp_closed(proto)
 
     def test_subprocess_wait_no_same_group(self):
         proto = None
