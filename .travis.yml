@@ -19,10 +19,12 @@ env:
     - GOBJECT_VERDIR=3.2
     - GOBJECT_VERSION=3.2.2
     - PKG_CONFIG_PATH=$VIRTUAL_ENV/lib/pkgconfig
+    # - PYTHON_INCLUDES=$VIRTUAL_ENV/
 
 # command to install dependencies
 install: 
   - env | sort
+  - ls $VIRTUAL_ENV
 
   # Install PyGObject
   - wget http://ftp.gnome.org/pub/GNOME/sources/pygobject/$GOBJECT_VERDIR/pygobject-$GOBJECT_VERSION.tar.xz
@@ -34,7 +36,7 @@ install:
   - cd ..
 
   # Other PyPI dependencies
-  - python3 setup.py develop
+  - python setup.py develop
 # command to run tests
 script:
-  - cd tests && python3 -m unittest -bv
+  - cd tests && python -m unittest -bv
