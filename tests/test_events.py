@@ -1488,7 +1488,7 @@ class SubprocessTestsMixin:
             self.assertEqual(b'ERR:OSError', proto.data[2])
         transp.close()
         self.loop.run_until_complete(proto.completed)
-        self.check_terminated(proto.returncode)
+        self.check_killed(proto.returncode)
 
     def test_subprocess_wait_no_same_group(self):
         proto = None
