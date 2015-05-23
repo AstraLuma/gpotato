@@ -4,4 +4,4 @@ develop:
 
 .PHONY: test
 test:
-	cd tests && python3 -m unittest -b
+	cd tests && python3 -m unittest -bv
