@@ -18,7 +18,7 @@ env:
   global:
     - GOBJECT_VERDIR=3.2
     - GOBJECT_VERSION=3.2.2
-    - PKG_CONFIG_PATH=$VIRT_ROOT/lib/pkgconfig
+    - PKG_CONFIG_PATH=$VIRTUAL_ENV/lib/pkgconfig
 
 # command to install dependencies
 install: 
@@ -28,7 +28,7 @@ install:
   - wget http://ftp.gnome.org/pub/GNOME/sources/pygobject/$GOBJECT_VERDIR/pygobject-$GOBJECT_VERSION.tar.xz
   - tar xf pygobject-$GOBJECT_VERSION.tar.xz
   - cd pygobject-$GOBJECT_VERSION
-  - ./configure --prefix=$VIRT_ROOT
+  - ./configure --prefix=$VIRTUAL_ENV
   - make
   - make install
   - cd ..
