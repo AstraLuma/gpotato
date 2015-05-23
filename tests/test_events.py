@@ -1691,7 +1691,7 @@ class HandleTests(LoopSetupMixin, unittest.TestCase):
             return args
         h1 = asyncio.Handle(callback, (), self.loop)
         self.assertRaises(
-            AssertionError, asyncio.Handle, h1, ())
+            AssertionError, asyncio.Handle, h1, (), self.loop)
 
     @unittest.expectedFailure
     @unittest.mock.patch('asyncio.log.logger')
