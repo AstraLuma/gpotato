@@ -3,6 +3,11 @@ python:
   - "3.3"
   - "3.4"
   - "nightly"
+
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install -qq python3-gi gir1.2-gtk-3.0
+
 # command to install dependencies
 install: "make develop"
 # command to run tests
