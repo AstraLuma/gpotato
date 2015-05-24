@@ -18,11 +18,14 @@ env:
   global:
     - GOBJECT_VERDIR=3.2
     - GOBJECT_VERSION=3.2.2
-    - PKG_CONFIG_PATH=$VIRTUAL_ENV/lib/pkgconfig
-    - PYTHON_INCLUDES=$VIRTUAL_ENV/include
 
 # command to install dependencies
 install: 
+  # These have to happen after the venv is activated
+  - export PKG_CONFIG_PATH=$VIRTUAL_ENV/lib/pkgconfig
+  - export PYTHON_INCLUDES=$VIRTUAL_ENV/include
+
+  # Debug
   - env | sort
   - ls $VIRTUAL_ENV
 
