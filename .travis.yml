@@ -24,7 +24,7 @@ install:
   # These have to happen after the venv is activated
   - export PKG_CONFIG_PATH=$VIRTUAL_ENV/lib/pkgconfig
   # Here's hoping there's only one
-  - export PYTHON_INCLUDES=-I$VIRTUAL_ENV/include/*
+  - export PYTHON_INCLUDES=-I$(echo $VIRTUAL_ENV/include/*)
 
   # Debug
   - env | sort
