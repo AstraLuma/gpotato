@@ -19,8 +19,9 @@ addons:
 
 env:
   global:
-    - GOBJECT_VERDIR=3.17
-    - GOBJECT_VERSION=3.17.1
+    # This matches the gobject version in travis
+    - GOBJECT_VERDIR=3.2
+    - GOBJECT_VERSION=3.2.2
 
 # command to install dependencies
 install: 
