@@ -19,8 +19,8 @@ addons:
 
 env:
   global:
-    - GOBJECT_VERDIR=3.2
-    - GOBJECT_VERSION=3.2.2
+    - GOBJECT_VERDIR=3.17
+    - GOBJECT_VERSION=3.17.1
 
 # command to install dependencies
 install: 
